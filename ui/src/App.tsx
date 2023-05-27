@@ -3,6 +3,8 @@ import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 import Home from "./pages/Home";
 import MainLayout from "./layout/MainLayout";
 import LoginPage from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import AuthRequired from "./components/AuthRequired";
 
 function App() {
   return useRoutes([
@@ -10,10 +12,21 @@ function App() {
       path: "/",
       element: <MainLayout />,
       children: [
-        { path: "/", element: <Home /> },
+        {
+          path: "/",
+          element: (
+            <AuthRequired>
+              <Home />
+            </AuthRequired>
+          ),
+        },
         {
           path: "/login",
           element: <LoginPage />,
+        },
+        {
+          path: "/signup",
+          element: <SignUp />,
         },
       ],
     },

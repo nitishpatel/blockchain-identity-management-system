@@ -8,20 +8,41 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Container } from "@mui/material";
+import { Alert, Chip, Container, FormLabel } from "@mui/material";
+import { Formik, FormikProvider, useFormik } from "formik";
+import * as Yup from "yup";
+import { useHttpApi } from "../state/useHttpApi";
+import { useAuthState } from "../state/useAuthState";
+import React from "react";
+import { useNavigate } from "react-router";
 
 export default function LoginPage() {
-  const handleSubmit = (event: {
-    preventDefault: () => void;
-    currentTarget: HTMLFormElement | undefined;
-  }) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const { login } = useAuthState();
+  const [error, setError] = React.useState("");
+  const navigate = useNavigate();
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string().required("Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: LoginSchema,
+    onSubmit: async ({ email, password }) => {
+      try {
+        console.log("check", email, password);
+        const res = await login(email, password);
+        navigate("/");
+      } catch (e: any) {
+        setError(e.message);
+      }
+    },
+  });
+
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } =
+    formik;
 
   return (
     <Container component="main" maxWidth="lg">
@@ -66,57 +87,66 @@ export default function LoginPage() {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 1 }}
-              >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+
+              {error && (
+                <Alert
+                  sx={{
+                    width: "100%",
+                    px: 2,
+                    mx: 2,
+                  }}
+                  severity="error"
                 >
-                  Sign In
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
+                  {error}
+                </Alert>
+              )}
+              <FormikProvider value={formik}>
+                <Box
+                  component="form"
+                  noValidate
+                  onSubmit={handleSubmit}
+                  sx={{ mt: 1 }}
+                >
+                  <FormLabel>Username</FormLabel>
+                  <TextField
+                    fullWidth
+                    autoComplete="email"
+                    id="email"
+                    type="email"
+                    placeholder="Enter email"
+                    {...getFieldProps("email")}
+                    error={Boolean(touched.email && errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+                  <FormLabel>Password</FormLabel>
+                  <TextField
+                    fullWidth
+                    autoComplete="password"
+                    id="password"
+                    type="password"
+                    placeholder="Enter Password"
+                    {...getFieldProps("password")}
+                    error={Boolean(touched.password && errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Sign In
+                  </Button>
+                  <Grid container>
+                    <Grid item>
+                      <Link href="/signup" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
-                </Grid>
-              </Box>
+                </Box>
+              </FormikProvider>
             </Box>
           </Grid>
         </Grid>

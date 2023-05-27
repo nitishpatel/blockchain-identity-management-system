@@ -12,6 +12,7 @@ const authRoutes = require("./backend/routes/auth");
 const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
+const cors = require("cors");
 mongoose
     .connect(process.env.DATABASE, {
         useNewUrlParser: true,
@@ -21,6 +22,7 @@ mongoose
         console.log("DB CONNECTED");
     });
 app.use(express.json());
+app.use(cors());
 
 // Start the server
 app.listen(port, () => {
