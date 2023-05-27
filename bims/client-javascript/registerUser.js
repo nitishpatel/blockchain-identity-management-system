@@ -12,11 +12,11 @@ const FabricCAServices = require("fabric-ca-client");
 const fs = require("fs");
 const path = require("path");
 
-async function main() {
+async function registerUser(id) {
     try {
         // load the network configuration
         console.log(process.argv);
-        const userName = "user-" + process.argv[2]; // Take username from command line
+        const userName = "user-" + id; // Take username from command line
         const ccpPath = path.resolve(
             __dirname,
             "..",
@@ -95,4 +95,4 @@ async function main() {
     }
 }
 
-main();
+module.exports = registerUser;
