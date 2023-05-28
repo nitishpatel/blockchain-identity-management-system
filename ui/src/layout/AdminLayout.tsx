@@ -28,7 +28,7 @@ const AdminLayout = () => {
             "& .MuiDrawer-paper": {
               width: drawerWidth,
               boxSizing: "border-box",
-              backgroundColor: "#222f3e",
+              backgroundColor: "#293241",
             },
           }}
           variant="permanent"
@@ -47,7 +47,7 @@ const AdminLayout = () => {
               >
                 <Box
                   component="img"
-                  src={`https://api.dicebear.com/6.x/fun-emoji/svg?seed=${user?.email}`}
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${user?.email}`}
                   sx={{
                     width: 50,
                     height: 50,

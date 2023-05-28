@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 
 const useAuthStateShared_ = () => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const navigate = useNavigate();

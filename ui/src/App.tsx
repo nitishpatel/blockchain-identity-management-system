@@ -6,18 +6,37 @@ import LoginPage from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import AuthRequired from "./components/AuthRequired";
 import AdminLayout from "./layout/AdminLayout";
+import EducationProofForm from "./pages/AddEducation";
+import EmploymentProofForm from "./pages/AddEmployment";
+import DashboardPage from "./pages/Dashboard";
 
 function App() {
   return useRoutes([
     {
-      path: "/",
+      path: "/user",
       element: <AdminLayout />,
       children: [
         {
-          path: "/",
+          path: "/user",
           element: (
             <AuthRequired>
-              <Home />
+              <DashboardPage />
+            </AuthRequired>
+          ),
+        },
+        {
+          path: "/user/add-education",
+          element: (
+            <AuthRequired>
+              <EducationProofForm />
+            </AuthRequired>
+          ),
+        },
+        {
+          path: "/user/add-employment",
+          element: (
+            <AuthRequired>
+              <EmploymentProofForm />
             </AuthRequired>
           ),
         },
@@ -27,6 +46,10 @@ function App() {
       path: "/",
       element: <MainLayout />,
       children: [
+        {
+          path: "/",
+          element: <Home />,
+        },
         {
           path: "/login",
           element: <LoginPage />,

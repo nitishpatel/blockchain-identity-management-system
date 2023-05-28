@@ -1,5 +1,6 @@
 /* eslint-disable strict */
 const User = require("../models/user");
+const getIdentity = require("./identities/getIdentity");
 
 exports.getUserById = (req, res, next, id) => {
     User.findById(id)
@@ -64,7 +65,7 @@ exports.updateUser = (req, res) => {
 
 exports.getCurrUser = (req, res) => {
     User.findById(req.profile._id)
-        .then((user) => {
+        .then(async (user) => {
             if (!user) {
                 return res.status(400).json({
                     error: "No User was Found in DB",
@@ -74,7 +75,12 @@ exports.getCurrUser = (req, res) => {
             user.encry_password = undefined;
             user.createdAt = undefined;
             user.updatedAt = undefined;
-            req.profile = user;
+            const data = { ...user._doc };
+            req.profile = data;
+            const identity = await getIdentity(user._id);
+            req.profile.identity = identity;
+
+            console.log(req.profile);
             res.json({
                 user: req.profile,
                 token: req.headers.authorization.split(" ")[1],

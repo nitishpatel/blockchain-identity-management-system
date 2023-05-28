@@ -41,7 +41,16 @@ export default function Navbar({ useDrawer = false }) {
         }}
       >
         <Toolbar>
-          <Box component="img" src={Logo} sx={{ height: 60 }} />
+          <Box
+            component="img"
+            src={Logo}
+            sx={{
+              height: 60,
+              // backgroundColor: "#957fef",
+              // borderRadius: 2,
+              // px: 2,
+            }}
+          />
           <Box sx={{ flexGrow: 1 }} />
           {user && (
             <div>

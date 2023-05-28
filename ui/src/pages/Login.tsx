@@ -33,7 +33,7 @@ export default function LoginPage() {
       try {
         console.log("check", email, password);
         const res = await login(email, password);
-        navigate("/");
+        navigate("/user");
       } catch (e: any) {
         setError(e.message);
       }

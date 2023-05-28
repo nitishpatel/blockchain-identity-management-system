@@ -53,12 +53,12 @@ const SideBar = ({ location }) => {
   return (
     <Box>
       <ListItemComponent
-        to="/add-education"
+        to="/user/add-education"
         text="Add Education"
         icon={<ListIcon />}
       />
       <ListItemComponent
-        to="/add-employment"
+        to="/user/add-employment"
         text="Add Employment"
         icon={<ListIcon />}
       />

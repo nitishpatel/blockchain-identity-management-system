@@ -7,7 +7,7 @@ const { expressjwt: expressJwt } = require("express-jwt");
 const mongoose = require("mongoose");
 const registerUser = require("../../registerUser");
 const createIdentity = require("../controllers/identities/createIdentity");
-
+const getIdentity = require("../controllers/identities/getIdentity");
 exports.signup = (req, res) => {
     const errors = validationResult(req);
 
@@ -48,7 +48,7 @@ exports.signin = (req, res) => {
     }
 
     User.findOne({ email })
-        .then((user) => {
+        .then(async (user) => {
             if (!user.authenticate(password)) {
                 return res.status(401).json({
                     error: "Email and password do not match",
@@ -62,7 +62,11 @@ exports.signin = (req, res) => {
 
             //send response to front end
             const { _id, name, email, role } = user;
-            return res.json({ token, user: { _id, name, email, role } });
+            const identity = await getIdentity(_id);
+            return res.json({
+                token,
+                user: { _id, name, email, role, identity },
+            });
         })
         .catch((err) => {
             if (err) {
