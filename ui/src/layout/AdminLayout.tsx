@@ -25,7 +25,6 @@ const AdminLayout = () => {
           sx={{
             width: drawerWidth,
             flexShrink: 0,
-
             "& .MuiDrawer-paper": {
               width: drawerWidth,
               boxSizing: "border-box",
@@ -39,11 +38,11 @@ const AdminLayout = () => {
             children={
               <Box
                 sx={{
-                  mt: 2,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "start",
                   justifyContent: "center",
+                  mt: 2,
                 }}
               >
                 <Box
