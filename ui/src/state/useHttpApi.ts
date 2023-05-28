@@ -4,25 +4,30 @@ import constate from "constate";
 // import { toFormData } from "helpers/http";
 import { API_URL } from "../config";
 import { userTokenPersistence } from "../persistence";
-import { useSetLoggedOutState } from "./useAuthStateShared";
 
 // Define the API response type based on your application's response structure
+interface UserData {
+  user: unknown;
+  token: string;
+}
+
+interface UserSignUpData {
+  name: string;
+  email: string;
+  id: string
+}
 
 const useHttpApi_ = () => {
   const [token, setToken] = useState(userTokenPersistence.get());
-  const setLoggedOutState = useSetLoggedOutState();
 
   useMemo(() => {
     axios.defaults.baseURL = API_URL;
-    axios.defaults.headers.common["Authorization"] = token;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }, [token]);
 
 
 
-  const getCurrentUser = async (): Promise<{ user: string; token: string }> => {
-    const res = await axios.get("/user");
-    return res.data;
-  };
+
 
   const get = async <T>(url: string): Promise<T> => {
     const res = await axios.get(url);
@@ -57,10 +62,8 @@ const useHttpApi_ = () => {
       const res = await post<{
         user: any, token: string
       }>('/auth/signin', data);
-      console.log(res);
       const { token, user } = res;
-      console.log(token);
-      console.log(user);
+
       setToken(token);
 
       return { user, token };
@@ -71,14 +74,36 @@ const useHttpApi_ = () => {
   };
 
   const userLogout = async (): Promise<void> => {
-    await post('/logout', {});
-    setLoggedOutState();
+    await get('/auth/signout');
   };
+
+
+  const getCurrentUser = async (id: string | null): Promise<UserData> => {
+    const res: { user: unknown; token: string } = await get(`/api/getuser/${id}`);
+    return { user: res.user, token: res.token };
+  };
+
+  const signUp = async (data: {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+  }): Promise<UserSignUpData> => {
+    try {
+      const res = await post<UserSignUpData>('/auth/signup', data);
+      return res;
+    } catch (error: any) {
+      // Handle error here
+      throw new Error(error.response.data.error);
+    }
+  };
+
 
   return {
     userLogin,
     userLogout,
     getCurrentUser,
+    signUp,
     get,
     post,
     put,

@@ -12,11 +12,12 @@ import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Logo from "../assets/bims.png";
 import Menu from "@mui/material/Menu";
-
-export default function Navbar() {
+import { useAuthState } from "../state/useAuthState";
+const drawerWidth = 240;
+export default function Navbar({ useDrawer = false }) {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
+  const { logout, user } = useAuthState();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(event.target.checked);
   };
@@ -32,15 +33,17 @@ export default function Navbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position="static"
+        position="sticky"
+        elevation={0}
         sx={{
-          backgroundColor: "#70a1ff",
+          width: useDrawer ? `calc(100% - ${drawerWidth}px)` : "100%",
+          ml: useDrawer ? `${drawerWidth}px` : 0,
         }}
       >
         <Toolbar>
           <Box component="img" src={Logo} sx={{ height: 60 }} />
           <Box sx={{ flexGrow: 1 }} />
-          {auth && (
+          {user && (
             <div>
               <IconButton
                 size="large"
@@ -52,6 +55,7 @@ export default function Navbar() {
               >
                 <AccountCircle />
               </IconButton>
+
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
@@ -69,6 +73,14 @@ export default function Navbar() {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    logout();
+                    handleClose();
+                  }}
+                >
+                  Logout
+                </MenuItem>
               </Menu>
             </div>
           )}

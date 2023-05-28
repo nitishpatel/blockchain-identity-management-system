@@ -13,6 +13,7 @@ const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
 const cors = require("cors");
+const all_routes = require("express-list-endpoints");
 mongoose
     .connect(process.env.DATABASE, {
         useNewUrlParser: true,
@@ -33,7 +34,12 @@ app.listen(port, () => {
 app.use("/identities", identityRoutes);
 app.use("/auth", authRoutes);
 app.use("/api", userRoutes);
-
+app.get("/docs", (req, res) => {
+    res.json({
+        message: "Welcome to BIMS API",
+        routes: all_routes(app),
+    });
+});
 // Update Identity
 // app.put("/identities/:id", async (req, res) => {
 //     try {

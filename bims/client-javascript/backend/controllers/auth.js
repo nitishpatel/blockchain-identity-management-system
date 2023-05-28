@@ -6,6 +6,7 @@ let jwt = require("jsonwebtoken");
 const { expressjwt: expressJwt } = require("express-jwt");
 const mongoose = require("mongoose");
 const registerUser = require("../../registerUser");
+const createIdentity = require("../controllers/identities/createIdentity");
 
 exports.signup = (req, res) => {
     const errors = validationResult(req);
@@ -21,6 +22,7 @@ exports.signup = (req, res) => {
     user.save()
         .then((user) => {
             registerUser(user._id);
+            createIdentity(user._id, user.name);
             res.json({
                 name: user.name,
                 email: user.email,
@@ -89,6 +91,12 @@ exports.isSignedIn = expressJwt({
 exports.isAuthenticated = (req, res, next) => {
     let checker =
         req.profile && req.auth && req.profile._id.toString() === req.auth._id;
+    console.log(req.profile);
+    console.log(req.auth);
+    console.log(req.profile._id);
+    console.log(req.auth._id);
+    console.log(checker);
+
     if (!checker) {
         return res.status(403).json({
             error: "ACCESS DENIED",

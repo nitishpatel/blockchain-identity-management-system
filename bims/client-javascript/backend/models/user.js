@@ -6,9 +6,9 @@ const uuidv1 = require("uuid/v1");
 
 let ROLES = {
     USER: 0,
-    GOVERNMENT: 1,
-    UNIVERSITY: 2,
-    COMPANY: 3,
+    UNIVERSITY: 1,
+    COMPANY: 2,
+    GOVERNMENT: 3,
 };
 
 let userSchema = new mongoose.Schema(

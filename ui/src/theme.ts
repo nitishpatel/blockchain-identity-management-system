@@ -4,10 +4,7 @@ import { red } from '@mui/material/colors';
 // Create a theme instance.
 const theme = createTheme({
     typography: {
-        fontFamily: [
-            'Roboto',
-            'sans-serif',
-        ].join(','),
+        fontFamily: "Nunito, Roboto, sans-serif"
 
     },
     palette: {

@@ -20,13 +20,13 @@ const useAuthState_ = () => {
       setIsReady(true);
     }
     const token = userTokenPersistence.get();
-
     if (!token) {
       setLoggedOutState();
       setIsReady(true);
     }
     try {
-      const { user, token } = await getCurrentUser();
+      const id = userNamePersistence.get();
+      const { user, token } = await getCurrentUser(id);
       setUser(user);
       setIsAuthorized(true);
     } catch (e) {
@@ -38,9 +38,9 @@ const useAuthState_ = () => {
 
   const login = async (email: string, password: string) => {
     const res = await userLogin({ email, password });
-    userNamePersistence.set(res.user.name);
+    userNamePersistence.set(res.user._id);
     userTokenPersistence.set(res.token);
-    setUser(res.user.name);
+    setUser(res.user);
     setIsAuthorized(true);
     setIsReady(true);
   };

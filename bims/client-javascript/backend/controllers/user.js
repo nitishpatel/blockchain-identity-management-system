@@ -61,3 +61,27 @@ exports.updateUser = (req, res) => {
         }
     );
 };
+
+exports.getCurrUser = (req, res) => {
+    User.findById(req.profile._id)
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    error: "No User was Found in DB",
+                });
+            }
+            user.salt = undefined;
+            user.encry_password = undefined;
+            user.createdAt = undefined;
+            user.updatedAt = undefined;
+            req.profile = user;
+            res.json({
+                user: req.profile,
+                token: req.headers.authorization.split(" ")[1],
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).json({ error: "No User was Found in DB" });
+        });
+};

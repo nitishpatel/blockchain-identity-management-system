@@ -1,9 +1,13 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthState } from "../state/useAuthState";
 import { useAuthStateShared } from "../state/useAuthStateShared";
 
-const AuthRequired = ({ children }) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const AuthRequired: React.FC<Props> = ({ children }) => {
   const { isAuthorized, initAuth } = useAuthState();
   const { user } = useAuthStateShared();
   const navigate = useNavigate();

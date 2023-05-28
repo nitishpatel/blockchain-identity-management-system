@@ -5,12 +5,13 @@ import MainLayout from "./layout/MainLayout";
 import LoginPage from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import AuthRequired from "./components/AuthRequired";
+import AdminLayout from "./layout/AdminLayout";
 
 function App() {
   return useRoutes([
     {
       path: "/",
-      element: <MainLayout />,
+      element: <AdminLayout />,
       children: [
         {
           path: "/",
@@ -20,6 +21,12 @@ function App() {
             </AuthRequired>
           ),
         },
+      ],
+    },
+    {
+      path: "/",
+      element: <MainLayout />,
+      children: [
         {
           path: "/login",
           element: <LoginPage />,
