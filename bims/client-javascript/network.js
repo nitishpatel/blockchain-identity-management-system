@@ -44,7 +44,7 @@ async function connectToNetwork(walletUser = "admin-1") {
     const network = await gateway.getNetwork("mychannel");
     const contract = network.getContract("bims");
 
-    return contract;
+    return { contract, network };
 }
 
 module.exports = connectToNetwork;

@@ -115,6 +115,34 @@ class BIMS extends Contract {
     await ctx.stub.putState(id, Buffer.from(JSON.stringify(identity)));
     return JSON.stringify(identity);
   }
+  async getTransactionDetailsByID(ctx, txID) {
+    const result = await ctx.stub.evaluateTransactionByID(txID);
+    const transaction = JSON.parse(result.toString());
+    return transaction;
+  }
+
+  async getIdentityUpdates(ctx, id) {
+    const iterator = await ctx.stub.getHistoryForKey(id);
+    const updates = [];
+
+    while (true) {
+      const response = await iterator.next();
+
+      if (response.done) {
+        break;
+      }
+
+      const transaction = {
+        transactionId: response.value.txId,
+        timestamp: new Date(response.value.timestamp.seconds * 1000),
+        value: JSON.parse(response.value.value.toString("utf8")),
+      };
+
+      updates.push(transaction);
+    }
+
+    return updates;
+  }
 }
 
 module.exports = BIMS;

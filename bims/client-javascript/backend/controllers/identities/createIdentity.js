@@ -4,7 +4,7 @@ const connectToNetwork = require("../../../network");
 
 async function createIdentity(id, name) {
     try {
-        const contract = await connectToNetwork();
+        const { contract } = await connectToNetwork();
         const result = await contract.submitTransaction(
             "createIdentity",
             id,

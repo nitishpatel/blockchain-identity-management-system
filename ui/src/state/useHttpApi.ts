@@ -98,11 +98,17 @@ const useHttpApi_ = () => {
     }
   };
 
+  const getTxnUpdates = async (id: string): Promise<any> => {
+    const res = await get(`identities/updates/${id}`);
+    return res;
+  };
+
 
   return {
     userLogin,
     userLogout,
     getCurrentUser,
+    getTxnUpdates,
     signUp,
     get,
     post,

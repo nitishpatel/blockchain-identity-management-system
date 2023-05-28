@@ -8,6 +8,7 @@ const createIdentity = require("../controllers/identities/createIdentity");
 const getCTX = require("../controllers/identities/getCTX");
 const addEducationProof = require("../controllers/identities/addEducationProof");
 const { check } = require("express-validator");
+const getIdentityUpdates = require("../controllers/identities/getIdentityUpdates");
 
 router.post("/", async (req, res) => {
     try {
@@ -65,5 +66,16 @@ router.post(
         }
     }
 );
+
+router.get("/updates/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updates = await getIdentityUpdates(id);
+
+        res.json(updates);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router;

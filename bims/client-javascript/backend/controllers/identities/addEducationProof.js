@@ -4,7 +4,7 @@ const connectToNetwork = require("../../../network");
 
 async function addEducationProof(id, proof) {
     try {
-        const contract = await connectToNetwork(`user-${id}`);
+        const { contract } = await connectToNetwork(`user-${id}`);
         const result = await contract.submitTransaction(
             "addEducationProof",
             id,

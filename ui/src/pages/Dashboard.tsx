@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useAuthState } from "../state/useAuthState";
+import { useHttpApi } from "../state/useHttpApi";
+import ReactDiffViewer from "react-diff-viewer";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,11 +30,23 @@ const useStyles = makeStyles((theme) => ({
 const DashboardPage = () => {
   const classes = useStyles();
   const { user } = useAuthState();
+  const { getTxnUpdates } = useHttpApi();
+  const [txnUpdates, setTxnUpdates] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchTxnUpdates = async () => {
+      getTxnUpdates(user._id).then((res) => {
+        setTxnUpdates(res);
+      });
+    };
+    fetchTxnUpdates();
+  }, [user]);
 
   // Sample user data
 
   return (
     <Container maxWidth="md" className={classes.root}>
+      {JSON.stringify(txnUpdates)}
       <Typography variant="h4" component="h1" align="center" gutterBottom>
         Dashboard
       </Typography>
@@ -80,25 +94,114 @@ const DashboardPage = () => {
               Education Proof
             </Typography>
 
-            {user && user.identity.educationProofs && (
+            {user &&
+              user.identity &&
+              user.identity.educationProofs.length > 0 && (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell> Degree </TableCell>
+                      <TableCell>College</TableCell>
+                      <TableCell>Start Year</TableCell>
+                      <TableCell>End Year</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {user.identity.educationProofs.map(
+                      (proof: {
+                        degreeName:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                        college:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                        startYear:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                        endYear:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | React.ReactFragment
+                          | React.ReactPortal
+                          | null
+                          | undefined;
+                      }) => (
+                        <TableRow>
+                          <TableCell>{proof.degreeName}</TableCell>
+                          <TableCell>{proof.college}</TableCell>
+                          <TableCell>
+                            {proof.startYear ? proof.startYear : "N/A"}
+                          </TableCell>
+                          <TableCell>
+                            {proof.endYear ? proof.endYear : "N/A"}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    )}
+                  </TableBody>
+                </Table>
+              )}
+          </Paper>
+        </Grid>
+      </Grid>
+
+      <Grid
+        container
+        justifyContent="center"
+        sx={{
+          marginTop: 4,
+        }}
+      >
+        <Grid item lg={12} sm={6}>
+          <Paper elevation={3} className={classes.paper}>
+            <Typography variant="h6" gutterBottom>
+              Txn Updates
+            </Typography>
+            {txnUpdates && txnUpdates.length > 0 && (
               <Table>
                 <TableHead>
-                  <TableCell> Degree </TableCell>
-                  <TableCell>College</TableCell>
-                  <TableCell>Start Year</TableCell>
-                  <TableCell>End Year</TableCell>
+                  <TableRow>
+                    <TableCell> Txn Hash </TableCell>
+                    <TableCell> Block Number </TableCell>
+                  </TableRow>
                 </TableHead>
                 <TableBody>
-                  {user.identity.educationProofs.map((proof) => (
-                    <TableRow>
-                      <TableCell>{proof.degreeName}</TableCell>
-                      <TableCell>{proof.college}</TableCell>
-                      <TableCell>
-                        {proof.startYear ? proof.startYear : "N/A"}
-                      </TableCell>
-                      <TableCell>
-                        {proof.endYear ? proof.endYear : "N/A"}
-                      </TableCell>
+                  {txnUpdates.map((txn) => (
+                    <TableRow key={txn.transactionId}>
+                      <TableCell>{txn.transactionId}</TableCell>
+                      <TableCell>{txn.timestamp}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
