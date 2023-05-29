@@ -45,7 +45,7 @@ const DashboardPage = () => {
   // Sample user data
 
   return (
-    <Container maxWidth="md" className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
       {JSON.stringify(txnUpdates)}
       <Typography variant="h4" component="h1" align="center" gutterBottom>
         Dashboard
@@ -194,14 +194,16 @@ const DashboardPage = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell> Txn Hash </TableCell>
-                    <TableCell> Block Number </TableCell>
+                    <TableCell> Time Stamp </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {txnUpdates.map((txn) => (
                     <TableRow key={txn.transactionId}>
                       <TableCell>{txn.transactionId}</TableCell>
-                      <TableCell>{txn.timestamp}</TableCell>
+                      <TableCell>
+                        {new Date(txn.timestamp).toLocaleString()}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

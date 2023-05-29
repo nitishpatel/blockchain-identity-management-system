@@ -52,6 +52,7 @@ const ListItemComponent = ({ to, text, icon }) => {
 const SideBar = ({ location }) => {
   return (
     <Box>
+      <ListItemComponent to="/user/" text="Dashboard" icon={<ListIcon />} />
       <ListItemComponent
         to="/user/add-education"
         text="Add Education"

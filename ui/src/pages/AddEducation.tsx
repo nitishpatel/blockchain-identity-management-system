@@ -16,13 +16,18 @@ import {
   FormHelperText,
   Alert,
 } from "@mui/material";
+import { useHttpApi } from "../state/useHttpApi";
+import { useAuthState } from "../state/useAuthState";
 
 const currentYear = new Date().getFullYear();
 
 export default function EducationProofForm() {
+  const { addEducation } = useHttpApi();
+  const { user } = useAuthState();
+
   const EducationProofSchema = Yup.object().shape({
     college: Yup.string().required("College is required"),
-    rollno: Yup.string().required("Roll No is required"),
+    PRN: Yup.string().required("Roll No is required"),
     startYear: Yup.string().required("Start Year is required"),
     endYear: Yup.string().required("End Year is required"),
     CGPA: Yup.string().required("CGPA is required"),
@@ -33,7 +38,7 @@ export default function EducationProofForm() {
   const formik = useFormik({
     initialValues: {
       college: "",
-      rollno: "",
+      PRN: "",
       startYear: "",
       endYear: "",
       CGPA: "",
@@ -41,9 +46,11 @@ export default function EducationProofForm() {
       degreeName: "",
     },
     validationSchema: EducationProofSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       // Handle form submission here
       console.log(values);
+
+      await addEducation(user._id, values);
     },
   });
 
@@ -85,15 +92,15 @@ export default function EducationProofForm() {
                 />
               </Grid>
               <Grid item lg={6}>
-                <FormLabel>Roll No</FormLabel>
+                <FormLabel>Enter PRN</FormLabel>
                 <TextField
                   fullWidth
-                  id="rollno"
+                  id="PRN"
                   type="text"
-                  placeholder="Enter roll no"
-                  {...getFieldProps("rollno")}
-                  error={Boolean(touched.rollno && errors.rollno)}
-                  helperText={touched.rollno && errors.rollno}
+                  placeholder="Enter PRN"
+                  {...getFieldProps("PRN")}
+                  error={Boolean(touched.PRN && errors.PRN)}
+                  helperText={touched.PRN && errors.PRN}
                 />
               </Grid>
               <Grid item lg={6}>

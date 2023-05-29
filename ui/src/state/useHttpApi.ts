@@ -103,6 +103,19 @@ const useHttpApi_ = () => {
     return res;
   };
 
+  const addEducation = async (id: string, data: any): Promise<any> => {
+    try {
+      const res = await post(`/identities/education/`, {
+        id,
+        proof: data
+      });
+      return res;
+    } catch (error: any) {
+      throw new Error(error.response.data.error);
+    }
+
+  };
+
 
   return {
     userLogin,
@@ -110,6 +123,7 @@ const useHttpApi_ = () => {
     getCurrentUser,
     getTxnUpdates,
     signUp,
+    addEducation,
     get,
     post,
     put,
