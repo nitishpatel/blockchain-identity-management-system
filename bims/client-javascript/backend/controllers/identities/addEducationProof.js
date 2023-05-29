@@ -2,6 +2,7 @@
 /* eslint-disable strict */
 const connectToNetwork = require("../../../network");
 const uuidv1 = require("uuid/v1");
+const Approvals = require("../../models/approval");
 
 async function addEducationProof(id, proof) {
     try {
@@ -13,6 +14,16 @@ async function addEducationProof(id, proof) {
             id,
             JSON.stringify(proof)
         );
+
+        const approval = new Approvals({
+            approver: proof.collegeId,
+            proofId: proof.id,
+            proofType: "EDUCATION",
+            dump: proof,
+            candidateId: id,
+        });
+
+        await approval.save();
 
         return JSON.parse(result.toString());
     } catch (error) {

@@ -127,6 +127,18 @@ const useHttpApi_ = () => {
     }
   };
 
+  const approveEducation = async (id: string, proofId: string): Promise<any> => {
+    try {
+      const res = await post(`/identities/approve/education/`, {
+        id,
+        proofId
+      });
+      return res;
+    } catch (error: any) {
+      throw new Error(error.response.data.error);
+    }
+  };
+
   const getColleges = async (): Promise<any> => {
     const res = await get(`/api/colleges`);
     return res;
@@ -136,6 +148,11 @@ const useHttpApi_ = () => {
     const res = await get(`/api/companies`);
     return res;
   };
+
+  const getApprovals = async (id: string): Promise<any> => {
+    const res = await get(`/api/approvals/${id}`);
+    return res;
+  }
 
   return {
     userLogin,
@@ -147,6 +164,8 @@ const useHttpApi_ = () => {
     addEmployment,
     getColleges,
     getCompanies,
+    getApprovals,
+    approveEducation,
     get,
     post,
     put,

@@ -9,6 +9,7 @@ import AdminLayout from "./layout/AdminLayout";
 import EducationProofForm from "./pages/AddEducation";
 import EmploymentProofForm from "./pages/AddEmployment";
 import DashboardPage from "./pages/Dashboard";
+import Approvals from "./pages/Approval";
 
 function App() {
   return useRoutes([
@@ -21,6 +22,14 @@ function App() {
           element: (
             <AuthRequired>
               <DashboardPage />
+            </AuthRequired>
+          ),
+        },
+        {
+          path: "/user/approvals",
+          element: (
+            <AuthRequired>
+              <Approvals />
             </AuthRequired>
           ),
         },

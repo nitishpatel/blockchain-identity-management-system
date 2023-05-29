@@ -1,5 +1,6 @@
 /* eslint-disable strict */
 const User = require("../models/user");
+const Approvals = require("../models/approval");
 const getIdentity = require("./identities/getIdentity");
 
 exports.getUserById = (req, res, next, id) => {
@@ -119,5 +120,18 @@ exports.getCompanies = (req, res) => {
         })
         .catch((err) =>
             res.status(400).json({ error: "No User was Found in DB" })
+        );
+};
+
+exports.fetchApprovals = (req, res) => {
+    Approvals.find({ approver: req.profile._id })
+        .then((approvals) => {
+            if (!approvals) {
+                return res.json([]);
+            }
+            res.json(approvals);
+        })
+        .catch((err) =>
+            res.status(400).json({ error: "No Approvals were Found in DB" })
         );
 };
