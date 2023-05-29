@@ -109,6 +109,7 @@ const DashboardPage = () => {
                   <TableBody>
                     {user.identity.educationProofs.map(
                       (proof: {
+                        id: any;
                         degreeName:
                           | string
                           | number
@@ -204,19 +205,27 @@ const DashboardPage = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {user.identity.employmentProofs.map((proof) => (
-                      <TableRow>
-                        <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
-                        <TableCell>{proof.companyName}</TableCell>
-                        <TableCell>{proof.jobTitle}</TableCell>
-                        <TableCell>
-                          {proof.startDate ? proof.startDate : "N/A"}
-                        </TableCell>
-                        <TableCell>
-                          {proof.endDate ? proof.endDate : "N/A"}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {user.identity.employmentProofs.map(
+                      (proof: {
+                        id: string;
+                        companyName: string;
+                        jobTitle: string;
+                        startDate: string;
+                        endDate: string;
+                      }) => (
+                        <TableRow>
+                          <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
+                          <TableCell>{proof.companyName}</TableCell>
+                          <TableCell>{proof.jobTitle}</TableCell>
+                          <TableCell>
+                            {proof.startDate ? proof.startDate : "N/A"}
+                          </TableCell>
+                          <TableCell>
+                            {proof.endDate ? proof.endDate : "N/A"}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    )}
                   </TableBody>
                 </Table>
               )}
