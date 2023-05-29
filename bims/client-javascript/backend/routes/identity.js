@@ -9,6 +9,7 @@ const getCTX = require("../controllers/identities/getCTX");
 const addEducationProof = require("../controllers/identities/addEducationProof");
 const { check } = require("express-validator");
 const getIdentityUpdates = require("../controllers/identities/getIdentityUpdates");
+const addEmploymentProof = require("../controllers/identities/addEmploymentProof");
 
 router.post("/", async (req, res) => {
     try {
@@ -77,5 +78,28 @@ router.get("/updates/:id", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+router.post(
+    "/employment",
+    [
+        check("id", "id should be 12 characters long").isLength({ min: 12 }),
+        check("proof", "proof should be 12 characters long").isObject(),
+    ],
+    async (req, res) => {
+        try {
+            const { id, proof } = req.body;
+            const transactionId = await addEmploymentProof(id, proof);
+
+            res.json({
+                message: "Employment proof added successfully",
+                transactionId,
+            });
+        } catch (error) {
+            res.status(500).json({
+                error: error.responses[0].response.message,
+            });
+        }
+    }
+);
 
 module.exports = router;

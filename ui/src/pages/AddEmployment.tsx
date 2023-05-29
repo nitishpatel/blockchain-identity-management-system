@@ -10,8 +10,12 @@ import {
   TextField,
   Button,
 } from "@mui/material";
+import { useHttpApi } from "../state/useHttpApi";
+import { useAuthState } from "../state/useAuthState";
 
 const EmploymentProofForm = () => {
+  const { addEmployment } = useHttpApi();
+  const { user } = useAuthState();
   const validationSchema = Yup.object().shape({
     companyName: Yup.string().required("Company Name is required"),
     jobTitle: Yup.string().required("Job Title is required"),
@@ -29,9 +33,10 @@ const EmploymentProofForm = () => {
       employeeId: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       // Handle form submission logic here
       console.log(values);
+      await addEmployment(user._id, values);
     },
   });
 

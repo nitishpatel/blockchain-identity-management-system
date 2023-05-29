@@ -17,7 +17,7 @@ import { useAuthState } from "../state/useAuthState";
 import { useHttpApi } from "../state/useHttpApi";
 import ReactDiffViewer from "react-diff-viewer";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(8),
@@ -46,7 +46,6 @@ const DashboardPage = () => {
 
   return (
     <Container maxWidth="xl" className={classes.root}>
-      {JSON.stringify(txnUpdates)}
       <Typography variant="h4" component="h1" align="center" gutterBottom>
         Dashboard
       </Typography>
@@ -176,7 +175,50 @@ const DashboardPage = () => {
           </Paper>
         </Grid>
       </Grid>
+      <Grid
+        container
+        justifyContent="center"
+        sx={{
+          marginTop: 4,
+        }}
+      >
+        <Grid item lg={12} sm={6}>
+          <Paper elevation={3} className={classes.paper}>
+            <Typography variant="h6" gutterBottom>
+              Employment Proof
+            </Typography>
 
+            {user &&
+              user.identity &&
+              user.identity.employmentProofs.length > 0 && (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell> Company Name </TableCell>
+                      <TableCell>Job Title</TableCell>
+                      <TableCell>Start Date</TableCell>
+                      <TableCell>End Date</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {user.identity.employmentProofs.map((proof) => (
+                      <TableRow>
+                        <TableCell>{proof.companyName}</TableCell>
+                        <TableCell>{proof.jobTitle}</TableCell>
+                        <TableCell>
+                          {proof.startDate ? proof.startDate : "N/A"}
+                        </TableCell>
+                        <TableCell>
+                          {proof.endDate ? proof.endDate : "N/A"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+          </Paper>
+        </Grid>
+      </Grid>
       <Grid
         container
         justifyContent="center"
@@ -198,14 +240,16 @@ const DashboardPage = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {txnUpdates.map((txn) => (
-                    <TableRow key={txn.transactionId}>
-                      <TableCell>{txn.transactionId}</TableCell>
-                      <TableCell>
-                        {new Date(txn.timestamp).toLocaleString()}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {txnUpdates.map(
+                    (txn: { transactionId: string; timestamp: string }) => (
+                      <TableRow key={txn.transactionId}>
+                        <TableCell>{txn.transactionId}</TableCell>
+                        <TableCell>
+                          {new Date(txn.timestamp).toLocaleString()}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  )}
                 </TableBody>
               </Table>
             )}

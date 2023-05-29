@@ -113,7 +113,18 @@ const useHttpApi_ = () => {
     } catch (error: any) {
       throw new Error(error.response.data.error);
     }
+  };
 
+  const addEmployment = async (id: string, data: any): Promise<any> => {
+    try {
+      const res = await post(`/identities/employment/`, {
+        id,
+        proof: data
+      });
+      return res;
+    } catch (error: any) {
+      throw new Error(error.response.data.error);
+    }
   };
 
 
@@ -124,6 +135,7 @@ const useHttpApi_ = () => {
     getTxnUpdates,
     signUp,
     addEducation,
+    addEmployment,
     get,
     post,
     put,
