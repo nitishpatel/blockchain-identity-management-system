@@ -67,9 +67,9 @@ const DashboardPage = () => {
                 switch (user.role) {
                   case 0:
                     return "Individual";
-                  case "1":
+                  case 1:
                     return "Organization";
-                  case "2":
+                  case 2:
                     return "Government";
                   default:
                     return "Unknown";
@@ -99,6 +99,7 @@ const DashboardPage = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
+                      <TableCell> ID </TableCell>
                       <TableCell> Degree </TableCell>
                       <TableCell>College</TableCell>
                       <TableCell>Start Year</TableCell>
@@ -158,6 +159,7 @@ const DashboardPage = () => {
                           | undefined;
                       }) => (
                         <TableRow>
+                          <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
                           <TableCell>{proof.degreeName}</TableCell>
                           <TableCell>{proof.college}</TableCell>
                           <TableCell>
@@ -194,6 +196,7 @@ const DashboardPage = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
+                      <TableCell> ID </TableCell>
                       <TableCell> Company Name </TableCell>
                       <TableCell>Job Title</TableCell>
                       <TableCell>Start Date</TableCell>
@@ -203,6 +206,7 @@ const DashboardPage = () => {
                   <TableBody>
                     {user.identity.employmentProofs.map((proof) => (
                       <TableRow>
+                        <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
                         <TableCell>{proof.companyName}</TableCell>
                         <TableCell>{proof.jobTitle}</TableCell>
                         <TableCell>

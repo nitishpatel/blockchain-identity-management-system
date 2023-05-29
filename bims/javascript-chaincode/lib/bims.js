@@ -143,6 +143,50 @@ class BIMS extends Contract {
 
     return updates;
   }
+
+  async approveEducationProof(ctx, id, proofId) {
+    const identityBytes = await ctx.stub.getState(id);
+
+    if (!identityBytes || identityBytes.length === 0) {
+      throw new Error(`Identity with ID ${id} does not exist`);
+    }
+
+    const identity = JSON.parse(identityBytes.toString());
+    const proof = identity.educationProofs.find(
+      (proof) => proof.id === proofId
+    );
+
+    if (!proof) {
+      throw new Error(`Proof with ID ${proofId} does not exist`);
+    }
+
+    proof.verified = true;
+
+    await ctx.stub.putState(id, Buffer.from(JSON.stringify(identity)));
+    return JSON.stringify(identity);
+  }
+
+  async approveEmploymentProof(ctx, id, proofId) {
+    const identityBytes = await ctx.stub.getState(id);
+
+    if (!identityBytes || identityBytes.length === 0) {
+      throw new Error(`Identity with ID ${id} does not exist`);
+    }
+
+    const identity = JSON.parse(identityBytes.toString());
+    const proof = identity.employmentProofs.find(
+      (proof) => proof.id === proofId
+    );
+
+    if (!proof) {
+      throw new Error(`Proof with ID ${proofId} does not exist`);
+    }
+
+    proof.verified = true;
+
+    await ctx.stub.putState(id, Buffer.from(JSON.stringify(identity)));
+    return JSON.stringify(identity);
+  }
 }
 
 module.exports = BIMS;
