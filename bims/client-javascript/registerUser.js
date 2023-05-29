@@ -12,10 +12,11 @@ const FabricCAServices = require("fabric-ca-client");
 const fs = require("fs");
 const path = require("path");
 
-async function registerUser(id) {
+async function registerUser(id, role) {
     try {
         // load the network configuration
         console.log(process.argv);
+        const roles = ["STUDENT", "UNIVERSITY", "COMPANY", "GOVERNMENT"];
         const userName = "user-" + id; // Take username from command line
         const ccpPath = path.resolve(
             __dirname,
@@ -68,7 +69,7 @@ async function registerUser(id) {
                 affiliation: "org1.department1",
                 enrollmentID: userName,
                 role: "client",
-                attrs: [{ name: "role", value: "client", ecert: true }], // Add role attribute
+                attrs: [{ name: "role", value: roles[role], ecert: true }], // Add role attribute
             },
             adminUser
         );

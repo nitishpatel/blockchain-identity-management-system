@@ -21,7 +21,7 @@ exports.signup = (req, res) => {
 
     user.save()
         .then((user) => {
-            registerUser(user._id);
+            registerUser(user._id, user.role);
             createIdentity(user._id, user.name);
             res.json({
                 name: user.name,

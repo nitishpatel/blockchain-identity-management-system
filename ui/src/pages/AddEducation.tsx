@@ -22,8 +22,17 @@ import { useAuthState } from "../state/useAuthState";
 const currentYear = new Date().getFullYear();
 
 export default function EducationProofForm() {
-  const { addEducation } = useHttpApi();
+  const { addEducation, getColleges } = useHttpApi();
   const { user } = useAuthState();
+  const [colleges, setColleges] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchColleges = async () => {
+      const colleges = await getColleges();
+      setColleges(colleges);
+    };
+    fetchColleges();
+  }, []);
 
   const EducationProofSchema = Yup.object().shape({
     college: Yup.string().required("College is required"),
@@ -49,8 +58,17 @@ export default function EducationProofForm() {
     onSubmit: async (values) => {
       // Handle form submission here
       console.log(values);
+      const collegeName = colleges.filter(
+        (college: { _id: string; name: string }) =>
+          college._id === values.college
+      );
+      const data = {
+        ...values,
+        college: collegeName[0].name,
+        collegeId: collegeName[0]._id,
+      };
 
-      await addEducation(user._id, values);
+      await addEducation(user._id, data);
     },
   });
 
@@ -81,15 +99,23 @@ export default function EducationProofForm() {
             <Grid container spacing={2}>
               <Grid item lg={6}>
                 <FormLabel>College</FormLabel>
-                <TextField
-                  fullWidth
-                  id="college"
-                  type="text"
-                  placeholder="Enter college"
-                  {...getFieldProps("college")}
-                  error={Boolean(touched.college && errors.college)}
-                  helperText={touched.college && errors.college}
-                />
+                <FormControl fullWidth>
+                  <Select
+                    id="college"
+                    {...getFieldProps("college")}
+                    error={Boolean(touched.college && errors.college)}
+                  >
+                    <MenuItem value="">Select college</MenuItem>
+                    {colleges.map((college: { _id: string; name: string }) => (
+                      <MenuItem key={college._id} value={college._id}>
+                        {college.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>
+                    {touched.college && errors.college}
+                  </FormHelperText>
+                </FormControl>
               </Grid>
               <Grid item lg={6}>
                 <FormLabel>Enter PRN</FormLabel>
