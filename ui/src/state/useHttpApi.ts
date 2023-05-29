@@ -132,6 +132,11 @@ const useHttpApi_ = () => {
     return res;
   };
 
+  const getCompanies = async (): Promise<any> => {
+    const res = await get(`/api/companies`);
+    return res;
+  };
+
   return {
     userLogin,
     userLogout,
@@ -141,6 +146,7 @@ const useHttpApi_ = () => {
     addEducation,
     addEmployment,
     getColleges,
+    getCompanies,
     get,
     post,
     put,

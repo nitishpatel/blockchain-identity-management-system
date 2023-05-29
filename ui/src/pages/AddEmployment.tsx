@@ -9,13 +9,27 @@ import {
   Grid,
   TextField,
   Button,
+  Select,
+  FormLabel,
+  MenuItem,
+  FormHelperText,
+  FormControl,
 } from "@mui/material";
 import { useHttpApi } from "../state/useHttpApi";
 import { useAuthState } from "../state/useAuthState";
 
 const EmploymentProofForm = () => {
-  const { addEmployment } = useHttpApi();
+  const { addEmployment, getCompanies } = useHttpApi();
   const { user } = useAuthState();
+  const [companies, setCompanies] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchCompanies = async () => {
+      const companies = await getCompanies();
+      setCompanies(companies);
+    };
+    fetchCompanies();
+  }, []);
   const validationSchema = Yup.object().shape({
     companyName: Yup.string().required("Company Name is required"),
     jobTitle: Yup.string().required("Job Title is required"),
@@ -36,12 +50,28 @@ const EmploymentProofForm = () => {
     onSubmit: async (values) => {
       // Handle form submission logic here
       console.log(values);
-      await addEmployment(user._id, values);
+      const collegeName = companies.filter(
+        (college: { _id: string; name: string }) =>
+          college._id === values.companyName
+      );
+      const data = {
+        ...values,
+        companyName: collegeName[0].name,
+        companyId: collegeName[0]._id,
+      };
+      await addEmployment(user._id, data);
     },
   });
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
-    formik;
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    getFieldProps,
+  } = formik;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,17 +90,24 @@ const EmploymentProofForm = () => {
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="companyName"
-                name="companyName"
-                label="Company Name"
-                value={values.companyName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(touched.companyName && errors.companyName)}
-                helperText={touched.companyName && errors.companyName}
-              />
+              <FormLabel>College</FormLabel>
+              <FormControl fullWidth>
+                <Select
+                  id="companyName"
+                  {...getFieldProps("companyName")}
+                  error={Boolean(touched.companyName && errors.companyName)}
+                >
+                  <MenuItem value="">Select college</MenuItem>
+                  {companies.map((college: { _id: string; name: string }) => (
+                    <MenuItem key={college._id} value={college._id}>
+                      {college.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>
+                  {touched.companyName && errors.companyName}
+                </FormHelperText>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <TextField

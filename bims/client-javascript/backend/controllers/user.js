@@ -106,3 +106,18 @@ exports.getColleges = (req, res) => {
             res.status(400).json({ error: "No User was Found in DB" })
         );
 };
+
+exports.getCompanies = (req, res) => {
+    User.find({ role: 2 })
+        .then((users) => {
+            if (!users) {
+                return res.status(400).json({
+                    error: "No User was Found in DB",
+                });
+            }
+            res.json(users);
+        })
+        .catch((err) =>
+            res.status(400).json({ error: "No User was Found in DB" })
+        );
+};
