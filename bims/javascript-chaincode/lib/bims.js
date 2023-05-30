@@ -152,18 +152,40 @@ class BIMS extends Contract {
     }
 
     const identity = JSON.parse(identityBytes.toString());
-    const proof = identity.educationProofs.find(
+
+    identity.educationProofs = identity.educationProofs.map((proof) =>
+      typeof proof === "string" ? JSON.parse(proof) : proof
+    );
+
+    const proof = identity.educationProofs.filter(
       (proof) => proof.id === proofId
     );
 
-    if (!proof) {
-      throw new Error(`Proof with ID ${proofId} does not exist`);
+    if (!proof || proof.length === 0) {
+      throw new Error(
+        `Proof with ID ${proofId} does not exist ${JSON.stringify(
+          identity.educationProofs
+        )}`
+      );
     }
 
-    proof.verified = true;
+    let updated = {
+      ...identity,
+    };
 
-    await ctx.stub.putState(id, Buffer.from(JSON.stringify(identity)));
-    return JSON.stringify(identity);
+    updated.educationProofs = updated.educationProofs.map((proof) => {
+      if (proof.id === proofId) {
+        return {
+          ...proof,
+          verified: true,
+        };
+      }
+
+      return JSON.stringify(proof);
+    });
+
+    await ctx.stub.putState(id, Buffer.from(JSON.stringify(updated)));
+    return JSON.stringify(updated);
   }
 
   async approveEmploymentProof(ctx, id, proofId) {
@@ -174,18 +196,40 @@ class BIMS extends Contract {
     }
 
     const identity = JSON.parse(identityBytes.toString());
-    const proof = identity.employmentProofs.find(
+
+    identity.employmentProofs = identity.employmentProofs.map((proof) =>
+      typeof proof === "string" ? JSON.parse(proof) : proof
+    );
+
+    const proof = identity.employmentProofs.filter(
       (proof) => proof.id === proofId
     );
 
-    if (!proof) {
-      throw new Error(`Proof with ID ${proofId} does not exist`);
+    if (!proof || proof.length === 0) {
+      throw new Error(
+        `Proof with ID ${proofId} does not exist ${JSON.stringify(
+          identity.employmentProofs
+        )}`
+      );
     }
 
-    proof.verified = true;
+    let updated = {
+      ...identity,
+    };
 
-    await ctx.stub.putState(id, Buffer.from(JSON.stringify(identity)));
-    return JSON.stringify(identity);
+    updated.employmentProofs = updated.employmentProofs.map((proof) => {
+      if (proof.id === proofId) {
+        return {
+          ...proof,
+          verified: true,
+        };
+      }
+
+      return JSON.stringify(proof);
+    });
+
+    await ctx.stub.putState(id, Buffer.from(JSON.stringify(updated)));
+    return JSON.stringify(updated);
   }
 }
 

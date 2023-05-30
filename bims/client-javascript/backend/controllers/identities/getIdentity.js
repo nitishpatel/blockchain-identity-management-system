@@ -11,7 +11,7 @@ async function getIdentity(id) {
         JSON.parse(proof)
     );
     data.educationProofs = data.educationProofs.map((proof) =>
-        JSON.parse(proof)
+        typeof proof === "string" ? JSON.parse(proof) : proof
     );
     return data;
 }

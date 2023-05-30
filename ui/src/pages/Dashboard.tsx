@@ -16,6 +16,8 @@ import { makeStyles } from "@mui/styles";
 import { useAuthState } from "../state/useAuthState";
 import { useHttpApi } from "../state/useHttpApi";
 import ReactDiffViewer from "react-diff-viewer";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -104,11 +106,13 @@ const DashboardPage = () => {
                       <TableCell>College</TableCell>
                       <TableCell>Start Year</TableCell>
                       <TableCell>End Year</TableCell>
+                      <TableCell>Verified</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {user.identity.educationProofs.map(
                       (proof: {
+                        verified: any;
                         id: any;
                         degreeName:
                           | string
@@ -168,6 +172,58 @@ const DashboardPage = () => {
                           </TableCell>
                           <TableCell>
                             {proof.endYear ? proof.endYear : "N/A"}
+                          </TableCell>
+                          <TableCell>
+                            {proof.verified ? (
+                              <Box
+                                sx={{
+                                  display: "flex",
+
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <CheckCircleIcon
+                                  sx={{
+                                    color: "green",
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    mx: 1,
+                                    fontWeight: "bold",
+                                  }}
+                                  variant="caption"
+                                >
+                                  Verified
+                                </Typography>
+                              </Box>
+                            ) : (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <CancelIcon
+                                  sx={{
+                                    color: "red",
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    mx: 1,
+                                    fontWeight: "bold",
+                                  }}
+                                  variant="p"
+                                >
+                                  Not Verified
+                                </Typography>
+                              </Box>
+                            )}
                           </TableCell>
                         </TableRow>
                       )

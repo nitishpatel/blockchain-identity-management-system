@@ -9,7 +9,10 @@ let approvalSchema = new mongoose.Schema(
         approver: mongoose.Schema.Types.String,
         proofId: mongoose.Schema.Types.String,
         proofType: mongoose.Schema.Types.String,
-        deleted: mongoose.Schema.Types.Boolean,
+        deleted: {
+            type: mongoose.Schema.Types.Boolean,
+            default: false,
+        },
         dump: mongoose.Schema.Types.Mixed,
         candidateId: mongoose.Schema.Types.String,
     },

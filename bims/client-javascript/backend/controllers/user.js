@@ -124,7 +124,10 @@ exports.getCompanies = (req, res) => {
 };
 
 exports.fetchApprovals = (req, res) => {
-    Approvals.find({ approver: req.profile._id })
+    Approvals.find({
+        approver: req.profile._id,
+        deleted: false,
+    })
         .then((approvals) => {
             if (!approvals) {
                 return res.json([]);

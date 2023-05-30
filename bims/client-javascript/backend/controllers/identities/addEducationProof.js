@@ -9,6 +9,7 @@ async function addEducationProof(id, proof) {
         const { contract } = await connectToNetwork(`user-${id}`);
 
         proof.id = uuidv1();
+        proof.verified = false;
         const result = await contract.submitTransaction(
             "addEducationProof",
             id,

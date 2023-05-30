@@ -4,6 +4,8 @@ const connectToNetwork = require("../../../network");
 const Approvals = require("../../models/approval");
 
 async function approveEducationProof(id, proofId) {
+    console.log("Approving education proof");
+    console.log({ id, proofId });
     try {
         const { contract } = await connectToNetwork();
         const result = await contract.submitTransaction(
@@ -12,17 +14,13 @@ async function approveEducationProof(id, proofId) {
             proofId
         );
 
-        const approval = Approvals.updateOne(
-            {
-                proofId,
-            },
-            {
-                deleted: true,
-                verified: true,
-            }
-        );
+        const approval = await Approvals.findOne({
+            proofId,
+        });
 
-        await approval.save();
+        approval.verified = true;
+        approval.deleted = true;
+        approval.save();
 
         return JSON.parse(result.toString());
     } catch (error) {
