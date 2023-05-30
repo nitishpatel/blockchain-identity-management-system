@@ -56,9 +56,16 @@ const SideBar = ({ location }) => {
   return (
     <Box>
       <ListItemComponent to="/user/" text="Dashboard" icon={<ListIcon />} />
-      {user && (user.role === 1 || user.role === 2) && (
+      {user && user.role === 1 && (
         <ListItemComponent
-          to="/user/approvals"
+          to="/user/education-approvals"
+          text="Approvals"
+          icon={<ListIcon />}
+        />
+      )}
+      {user && user.role === 2 && (
+        <ListItemComponent
+          to="/user/employment-approvals"
           text="Approvals"
           icon={<ListIcon />}
         />

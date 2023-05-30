@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
 }));
 
-const Approvals = () => {
+const EducationApprovals = () => {
   const classes = useStyles();
   const { user } = useAuthState();
   const { getApprovals, approveEducation } = useHttpApi();
@@ -109,4 +109,4 @@ const Approvals = () => {
   );
 };
 
-export default Approvals;
+export default EducationApprovals;

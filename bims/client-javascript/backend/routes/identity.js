@@ -11,6 +11,7 @@ const { check } = require("express-validator");
 const getIdentityUpdates = require("../controllers/identities/getIdentityUpdates");
 const addEmploymentProof = require("../controllers/identities/addEmploymentProof");
 const approveEducationProof = require("../controllers/identities/approveEducationProof");
+const approveEmploymentProof = require("../controllers/identities/approveEmploymentProof");
 
 router.post("/", async (req, res) => {
     try {
@@ -126,4 +127,29 @@ router.post(
         }
     }
 );
+
+router.post(
+    "/approve/employment",
+    [
+        check("proofId", "proofId should be 12 characters long").isLength({
+            min: 12,
+        }),
+    ],
+    async (req, res) => {
+        try {
+            const { id, proofId } = req.body;
+            const transactionId = await approveEmploymentProof(id, proofId);
+
+            res.json({
+                message: "Employment proof approved successfully",
+                transactionId,
+            });
+        } catch (error) {
+            res.status(500).json({
+                error: error.responses[0].response.message,
+            });
+        }
+    }
+);
+
 module.exports = router;

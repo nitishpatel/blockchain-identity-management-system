@@ -8,7 +8,7 @@ async function getIdentity(id) {
     console.log(result.toString());
     const data = JSON.parse(result.toString());
     data.employmentProofs = data.employmentProofs.map((proof) =>
-        JSON.parse(proof)
+        typeof proof === "string" ? JSON.parse(proof) : proof
     );
     data.educationProofs = data.educationProofs.map((proof) =>
         typeof proof === "string" ? JSON.parse(proof) : proof

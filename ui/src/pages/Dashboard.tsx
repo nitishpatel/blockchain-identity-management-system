@@ -258,6 +258,7 @@ const DashboardPage = () => {
                       <TableCell>Job Title</TableCell>
                       <TableCell>Start Date</TableCell>
                       <TableCell>End Date</TableCell>
+                      <TableCell>Status</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -278,6 +279,58 @@ const DashboardPage = () => {
                           </TableCell>
                           <TableCell>
                             {proof.endDate ? proof.endDate : "N/A"}
+                          </TableCell>
+                          <TableCell>
+                            {proof.verified ? (
+                              <Box
+                                sx={{
+                                  display: "flex",
+
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <CheckCircleIcon
+                                  sx={{
+                                    color: "green",
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    mx: 1,
+                                    fontWeight: "bold",
+                                  }}
+                                  variant="caption"
+                                >
+                                  Verified
+                                </Typography>
+                              </Box>
+                            ) : (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <CancelIcon
+                                  sx={{
+                                    color: "red",
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    mx: 1,
+                                    fontWeight: "bold",
+                                  }}
+                                  variant="p"
+                                >
+                                  Not Verified
+                                </Typography>
+                              </Box>
+                            )}
                           </TableCell>
                         </TableRow>
                       )

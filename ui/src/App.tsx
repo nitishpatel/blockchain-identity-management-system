@@ -9,7 +9,9 @@ import AdminLayout from "./layout/AdminLayout";
 import EducationProofForm from "./pages/AddEducation";
 import EmploymentProofForm from "./pages/AddEmployment";
 import DashboardPage from "./pages/Dashboard";
-import Approvals from "./pages/Approval";
+import Approvals from "./pages/EducationApproval";
+import EducationApprovals from "./pages/EducationApproval";
+import EmploymentApprovals from "./pages/EmploymentApproval";
 
 function App() {
   return useRoutes([
@@ -26,10 +28,18 @@ function App() {
           ),
         },
         {
-          path: "/user/approvals",
+          path: "/user/education-approvals",
           element: (
             <AuthRequired>
-              <Approvals />
+              <EducationApprovals />
+            </AuthRequired>
+          ),
+        },
+        {
+          path: "/user/employment-approvals",
+          element: (
+            <AuthRequired>
+              <EmploymentApprovals />
             </AuthRequired>
           ),
         },
