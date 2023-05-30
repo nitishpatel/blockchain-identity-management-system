@@ -165,6 +165,21 @@ const useHttpApi_ = () => {
     return res;
   }
 
+  const shareData = async (id: string, organizationId: string): Promise<any> => {
+    try {
+      const res = await post(`/identities/share/`, {
+        id,
+        organizationId
+      });
+      return res;
+    } catch (error: any) {
+      throw new Error(error.response.data.error);
+    }
+  }
+  const getOrganization = async (): Promise<any> => {
+    const res = await get(`/api/organizations`);
+    return res;
+  };
   return {
     userLogin,
     userLogout,
@@ -178,6 +193,8 @@ const useHttpApi_ = () => {
     getApprovals,
     approveEducation,
     approveEmployment,
+    shareData,
+    getOrganization,
     get,
     post,
     put,

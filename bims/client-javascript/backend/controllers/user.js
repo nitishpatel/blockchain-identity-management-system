@@ -138,3 +138,22 @@ exports.fetchApprovals = (req, res) => {
             res.status(400).json({ error: "No Approvals were Found in DB" })
         );
 };
+
+exports.getOrganizations = (req, res) => {
+    User.find({
+        role: {
+            $in: [1, 2],
+        },
+    })
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    error: "No User was Found in DB",
+                });
+            }
+            res.json(user);
+        })
+        .catch((err) =>
+            res.status(400).json({ error: "No User was Found in DB" })
+        );
+};

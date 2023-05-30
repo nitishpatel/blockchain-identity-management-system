@@ -8,6 +8,7 @@ const {
     getColleges,
     getCompanies,
     fetchApprovals,
+    getOrganizations,
 } = require("../controllers/user");
 const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 
@@ -19,5 +20,6 @@ router.get("/getuser/:userId", isSignedIn, isAuthenticated, getCurrUser);
 router.get("/colleges", isSignedIn, getColleges);
 router.get("/companies", isSignedIn, getCompanies);
 router.get("/approvals/:userId", isSignedIn, isAuthenticated, fetchApprovals);
+router.get("/organizations", isSignedIn, getOrganizations);
 
 module.exports = router;

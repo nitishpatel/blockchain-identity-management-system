@@ -49,7 +49,6 @@ const EducationApprovals = () => {
       <Typography variant="h4" component="h1" align="center" gutterBottom>
         Requests for Approval
       </Typography>
-      {JSON.stringify(approvalsUpdates)}
       <Grid
         container
         justifyContent="center"

@@ -63,6 +63,13 @@ const SideBar = ({ location }) => {
           icon={<ListIcon />}
         />
       )}
+      {user && user.role === 0 && (
+        <ListItemComponent
+          to="/user/share"
+          text="Share Data"
+          icon={<ListIcon />}
+        />
+      )}
       {user && user.role === 2 && (
         <ListItemComponent
           to="/user/employment-approvals"

@@ -12,6 +12,7 @@ import DashboardPage from "./pages/Dashboard";
 import Approvals from "./pages/EducationApproval";
 import EducationApprovals from "./pages/EducationApproval";
 import EmploymentApprovals from "./pages/EmploymentApproval";
+import ShareData from "./pages/ShareData";
 
 function App() {
   return useRoutes([
@@ -24,6 +25,14 @@ function App() {
           element: (
             <AuthRequired>
               <DashboardPage />
+            </AuthRequired>
+          ),
+        },
+        {
+          path: "/user/share",
+          element: (
+            <AuthRequired>
+              <ShareData />
             </AuthRequired>
           ),
         },

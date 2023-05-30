@@ -30,6 +30,7 @@ class BIMS extends Contract {
       name: name,
       employmentProofs: [],
       educationProofs: [],
+      sharedWith: [],
     };
 
     // Check if identity already exists
@@ -95,7 +96,7 @@ class BIMS extends Contract {
     return JSON.stringify(identity);
   }
 
-  async shareDataWithOrganization(ctx, id, organization, dataType) {
+  async shareDataWithOrganization(ctx, id, organizationId) {
     const identityBytes = await ctx.stub.getState(id);
 
     if (!identityBytes || identityBytes.length === 0) {
@@ -103,14 +104,7 @@ class BIMS extends Contract {
     }
 
     const identity = JSON.parse(identityBytes.toString());
-
-    if (organization === "company") {
-      identity.shareEmploymentData = dataType;
-    } else if (organization === "university") {
-      identity.shareEducationData = dataType;
-    } else {
-      throw new Error(`Invalid organization: ${organization}`);
-    }
+    identity.sharedWith.push(organizationId);
 
     await ctx.stub.putState(id, Buffer.from(JSON.stringify(identity)));
     return JSON.stringify(identity);
@@ -230,6 +224,24 @@ class BIMS extends Contract {
 
     await ctx.stub.putState(id, Buffer.from(JSON.stringify(updated)));
     return JSON.stringify(updated);
+  }
+
+  async getIdentityForOrganization(ctx, id) {
+    const identityBytes = await ctx.stub.getState(id);
+
+    if (!identityBytes || identityBytes.length === 0) {
+      throw new Error(`Identity with ID ${id} does not exist`);
+    }
+
+    const identity = JSON.parse(identityBytes.toString());
+    // Check if the organization is allowed to see the identity
+    if (!identity.sharedWith.includes(ctx.clientIdentity.getMSPID())) {
+      throw new Error(
+        `Organization ${ctx.clientIdentity.getMSPID()} is not allowed to see identity ${id}`
+      );
+    }
+
+    return JSON.stringify(identity);
   }
 }
 

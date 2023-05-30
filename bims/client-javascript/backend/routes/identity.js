@@ -12,6 +12,7 @@ const getIdentityUpdates = require("../controllers/identities/getIdentityUpdates
 const addEmploymentProof = require("../controllers/identities/addEmploymentProof");
 const approveEducationProof = require("../controllers/identities/approveEducationProof");
 const approveEmploymentProof = require("../controllers/identities/approveEmploymentProof");
+const shareDataWithOrganization = require("../controllers/identities/shareDataWithOrganization");
 
 router.post("/", async (req, res) => {
     try {
@@ -142,6 +143,36 @@ router.post(
 
             res.json({
                 message: "Employment proof approved successfully",
+                transactionId,
+            });
+        } catch (error) {
+            res.status(500).json({
+                error: error.responses[0].response.message,
+            });
+        }
+    }
+);
+
+router.post(
+    "/share",
+    [
+        check(
+            "organizationId",
+            "proofId should be 12 characters long"
+        ).isLength({
+            min: 12,
+        }),
+    ],
+    async (req, res) => {
+        try {
+            const { id, organizationId } = req.body;
+            const transactionId = await shareDataWithOrganization(
+                id,
+                organizationId
+            );
+
+            res.json({
+                message: "Identity shared successfully",
                 transactionId,
             });
         } catch (error) {

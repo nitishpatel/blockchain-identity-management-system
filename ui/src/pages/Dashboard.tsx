@@ -82,265 +82,268 @@ const DashboardPage = () => {
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        justifyContent="center"
-        sx={{
-          marginTop: 4,
-        }}
-      >
-        <Grid item lg={12} sm={6}>
-          <Paper elevation={3} className={classes.paper}>
-            <Typography variant="h6" gutterBottom>
-              Education Proof
-            </Typography>
+      {user && user.role === 0 && (
+        <Grid
+          container
+          justifyContent="center"
+          sx={{
+            marginTop: 4,
+          }}
+        >
+          <Grid item lg={12} sm={6}>
+            <Paper elevation={3} className={classes.paper}>
+              <Typography variant="h6" gutterBottom>
+                Education Proof
+              </Typography>
 
-            {user &&
-              user.identity &&
-              user.identity.educationProofs.length > 0 && (
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell> ID </TableCell>
-                      <TableCell> Degree </TableCell>
-                      <TableCell>College</TableCell>
-                      <TableCell>Start Year</TableCell>
-                      <TableCell>End Year</TableCell>
-                      <TableCell>Verified</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {user.identity.educationProofs.map(
-                      (proof: {
-                        verified: any;
-                        id: any;
-                        degreeName:
-                          | string
-                          | number
-                          | boolean
-                          | React.ReactElement<
-                              any,
-                              string | React.JSXElementConstructor<any>
-                            >
-                          | React.ReactFragment
-                          | React.ReactPortal
-                          | null
-                          | undefined;
-                        college:
-                          | string
-                          | number
-                          | boolean
-                          | React.ReactElement<
-                              any,
-                              string | React.JSXElementConstructor<any>
-                            >
-                          | React.ReactFragment
-                          | React.ReactPortal
-                          | null
-                          | undefined;
-                        startYear:
-                          | string
-                          | number
-                          | boolean
-                          | React.ReactElement<
-                              any,
-                              string | React.JSXElementConstructor<any>
-                            >
-                          | React.ReactFragment
-                          | React.ReactPortal
-                          | null
-                          | undefined;
-                        endYear:
-                          | string
-                          | number
-                          | boolean
-                          | React.ReactElement<
-                              any,
-                              string | React.JSXElementConstructor<any>
-                            >
-                          | React.ReactFragment
-                          | React.ReactPortal
-                          | null
-                          | undefined;
-                      }) => (
-                        <TableRow>
-                          <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
-                          <TableCell>{proof.degreeName}</TableCell>
-                          <TableCell>{proof.college}</TableCell>
-                          <TableCell>
-                            {proof.startYear ? proof.startYear : "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {proof.endYear ? proof.endYear : "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {proof.verified ? (
-                              <Box
-                                sx={{
-                                  display: "flex",
+              {user &&
+                user.identity &&
+                user.identity.educationProofs.length > 0 && (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell> ID </TableCell>
+                        <TableCell> Degree </TableCell>
+                        <TableCell>College</TableCell>
+                        <TableCell>Start Year</TableCell>
+                        <TableCell>End Year</TableCell>
+                        <TableCell>Verified</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {user.identity.educationProofs.map(
+                        (proof: {
+                          verified: any;
+                          id: any;
+                          degreeName:
+                            | string
+                            | number
+                            | boolean
+                            | React.ReactElement<
+                                any,
+                                string | React.JSXElementConstructor<any>
+                              >
+                            | React.ReactFragment
+                            | React.ReactPortal
+                            | null
+                            | undefined;
+                          college:
+                            | string
+                            | number
+                            | boolean
+                            | React.ReactElement<
+                                any,
+                                string | React.JSXElementConstructor<any>
+                              >
+                            | React.ReactFragment
+                            | React.ReactPortal
+                            | null
+                            | undefined;
+                          startYear:
+                            | string
+                            | number
+                            | boolean
+                            | React.ReactElement<
+                                any,
+                                string | React.JSXElementConstructor<any>
+                              >
+                            | React.ReactFragment
+                            | React.ReactPortal
+                            | null
+                            | undefined;
+                          endYear:
+                            | string
+                            | number
+                            | boolean
+                            | React.ReactElement<
+                                any,
+                                string | React.JSXElementConstructor<any>
+                              >
+                            | React.ReactFragment
+                            | React.ReactPortal
+                            | null
+                            | undefined;
+                        }) => (
+                          <TableRow>
+                            <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
+                            <TableCell>{proof.degreeName}</TableCell>
+                            <TableCell>{proof.college}</TableCell>
+                            <TableCell>
+                              {proof.startYear ? proof.startYear : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              {proof.endYear ? proof.endYear : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              {proof.verified ? (
+                                <Box
+                                  sx={{
+                                    display: "flex",
 
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <CheckCircleIcon
-                                  sx={{
-                                    color: "green",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                   }}
-                                />
-                                <Typography
-                                  sx={{
-                                    mx: 1,
-                                    fontWeight: "bold",
-                                  }}
-                                  variant="caption"
                                 >
-                                  Verified
-                                </Typography>
-                              </Box>
-                            ) : (
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <CancelIcon
+                                  <CheckCircleIcon
+                                    sx={{
+                                      color: "green",
+                                    }}
+                                  />
+                                  <Typography
+                                    sx={{
+                                      mx: 1,
+                                      fontWeight: "bold",
+                                    }}
+                                    variant="caption"
+                                  >
+                                    Verified
+                                  </Typography>
+                                </Box>
+                              ) : (
+                                <Box
                                   sx={{
-                                    color: "red",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                   }}
-                                />
-                                <Typography
-                                  sx={{
-                                    mx: 1,
-                                    fontWeight: "bold",
-                                  }}
-                                  variant="p"
                                 >
-                                  Not Verified
-                                </Typography>
-                              </Box>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      )
-                    )}
-                  </TableBody>
-                </Table>
-              )}
-          </Paper>
+                                  <CancelIcon
+                                    sx={{
+                                      color: "red",
+                                    }}
+                                  />
+                                  <Typography
+                                    sx={{
+                                      mx: 1,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Not Verified
+                                  </Typography>
+                                </Box>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                )}
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid
-        container
-        justifyContent="center"
-        sx={{
-          marginTop: 4,
-        }}
-      >
-        <Grid item lg={12} sm={6}>
-          <Paper elevation={3} className={classes.paper}>
-            <Typography variant="h6" gutterBottom>
-              Employment Proof
-            </Typography>
+      )}
+      {user && user.role === 0 && (
+        <Grid
+          container
+          justifyContent="center"
+          sx={{
+            marginTop: 4,
+          }}
+        >
+          <Grid item lg={12} sm={6}>
+            <Paper elevation={3} className={classes.paper}>
+              <Typography variant="h6" gutterBottom>
+                Employment Proof
+              </Typography>
 
-            {user &&
-              user.identity &&
-              user.identity.employmentProofs.length > 0 && (
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell> ID </TableCell>
-                      <TableCell> Company Name </TableCell>
-                      <TableCell>Job Title</TableCell>
-                      <TableCell>Start Date</TableCell>
-                      <TableCell>End Date</TableCell>
-                      <TableCell>Status</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {user.identity.employmentProofs.map(
-                      (proof: {
-                        id: string;
-                        companyName: string;
-                        jobTitle: string;
-                        startDate: string;
-                        endDate: string;
-                      }) => (
-                        <TableRow>
-                          <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
-                          <TableCell>{proof.companyName}</TableCell>
-                          <TableCell>{proof.jobTitle}</TableCell>
-                          <TableCell>
-                            {proof.startDate ? proof.startDate : "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {proof.endDate ? proof.endDate : "N/A"}
-                          </TableCell>
-                          <TableCell>
-                            {proof.verified ? (
-                              <Box
-                                sx={{
-                                  display: "flex",
+              {user &&
+                user.identity &&
+                user.identity.employmentProofs.length > 0 && (
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell> ID </TableCell>
+                        <TableCell> Company Name </TableCell>
+                        <TableCell>Job Title</TableCell>
+                        <TableCell>Start Date</TableCell>
+                        <TableCell>End Date</TableCell>
+                        <TableCell>Status</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {user.identity.employmentProofs.map(
+                        (proof: {
+                          verified: boolean;
+                          id: string;
+                          companyName: string;
+                          jobTitle: string;
+                          startDate: string;
+                          endDate: string;
+                        }) => (
+                          <TableRow>
+                            <TableCell>{proof.id ? proof.id : "N/A"}</TableCell>
+                            <TableCell>{proof.companyName}</TableCell>
+                            <TableCell>{proof.jobTitle}</TableCell>
+                            <TableCell>
+                              {proof.startDate ? proof.startDate : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              {proof.endDate ? proof.endDate : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              {proof.verified ? (
+                                <Box
+                                  sx={{
+                                    display: "flex",
 
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <CheckCircleIcon
-                                  sx={{
-                                    color: "green",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                   }}
-                                />
-                                <Typography
-                                  sx={{
-                                    mx: 1,
-                                    fontWeight: "bold",
-                                  }}
-                                  variant="caption"
                                 >
-                                  Verified
-                                </Typography>
-                              </Box>
-                            ) : (
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <CancelIcon
+                                  <CheckCircleIcon
+                                    sx={{
+                                      color: "green",
+                                    }}
+                                  />
+                                  <Typography
+                                    sx={{
+                                      mx: 1,
+                                      fontWeight: "bold",
+                                    }}
+                                    variant="caption"
+                                  >
+                                    Verified
+                                  </Typography>
+                                </Box>
+                              ) : (
+                                <Box
                                   sx={{
-                                    color: "red",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                   }}
-                                />
-                                <Typography
-                                  sx={{
-                                    mx: 1,
-                                    fontWeight: "bold",
-                                  }}
-                                  variant="p"
                                 >
-                                  Not Verified
-                                </Typography>
-                              </Box>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      )
-                    )}
-                  </TableBody>
-                </Table>
-              )}
-          </Paper>
+                                  <CancelIcon
+                                    sx={{
+                                      color: "red",
+                                    }}
+                                  />
+                                  <Typography
+                                    sx={{
+                                      mx: 1,
+                                      fontWeight: "bold",
+                                    }}
+                                  >
+                                    Not Verified
+                                  </Typography>
+                                </Box>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                )}
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
       <Grid
         container
         justifyContent="center"
@@ -366,6 +369,7 @@ const DashboardPage = () => {
                     (txn: { transactionId: string; timestamp: string }) => (
                       <TableRow key={txn.transactionId}>
                         <TableCell>{txn.transactionId}</TableCell>
+
                         <TableCell>
                           {new Date(txn.timestamp).toLocaleString()}
                         </TableCell>
