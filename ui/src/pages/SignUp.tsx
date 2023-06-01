@@ -142,7 +142,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormLabel>Reward Frequency</FormLabel>
+                <FormLabel>Role</FormLabel>
                 <FormControl
                   size="small"
                   variant="outlined"
