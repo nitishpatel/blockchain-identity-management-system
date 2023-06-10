@@ -7,6 +7,7 @@ import {
   Container,
   Divider,
   Grid,
+  Modal,
   Paper,
   Select,
   Tab,
@@ -26,6 +27,23 @@ import { useAuthState } from "../state/useAuthState";
 import { useSnackbar } from "notistack";
 import { LoadingButton } from "@mui/lab";
 import { tableCellClasses } from "@mui/material/TableCell";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+interface UserData {
+  _id: string;
+  name: string;
+  employmentProofs: any[];
+  educationProofs: any[];
+}
+const style = {
+  position: "absolute" as const,
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+};
 
 const SearchData = () => {
   const { searchUser, getUserDataByOrg } = useHttpApi();
@@ -35,7 +53,7 @@ const SearchData = () => {
   const [search, setSearch] = React.useState("");
   const [error, setError] = React.useState("");
   const [data, setData] = React.useState([]);
-  const [userId, setUserId] = React.useState("");
+  const [userId, setUserId] = React.useState<UserData | undefined>(undefined);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -143,6 +161,7 @@ const SearchData = () => {
                                     user._id
                                   );
                                   console.log(res);
+                                  setUserId(res);
                                 } catch (err) {
                                   console.log(err);
                                   setError(err.response.data.error);
@@ -161,6 +180,273 @@ const SearchData = () => {
             </Grid>
           </Box>
         )}
+
+        <Modal
+          open={userId ? true : false}
+          onClose={() => {
+            setUserId(undefined);
+          }}
+        >
+          <Box sx={style}>
+            <Card>
+              <CardContent>
+                <Typography
+                  sx={{
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                  }}
+                >
+                  User Data
+                </Typography>
+
+                <Typography variant="h5">
+                  Name: {userId ? userId.name : ""}
+                </Typography>
+                <Divider
+                  sx={{
+                    my: 2,
+                    backgroundColor: "black",
+                  }}
+                />
+                <Typography variant="h6" gutterBottom>
+                  Education Proof
+                </Typography>
+                {userId &&
+                  userId.educationProofs &&
+                  userId.educationProofs.length > 0 && (
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell> Degree </TableCell>
+                          <TableCell>College</TableCell>
+                          <TableCell>Start Year</TableCell>
+                          <TableCell>End Year</TableCell>
+                          <TableCell>Verified</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {userId.educationProofs.map(
+                          (proof: {
+                            verified: any;
+                            id: any;
+                            degreeName:
+                              | string
+                              | number
+                              | boolean
+                              | React.ReactElement<
+                                  any,
+                                  string | React.JSXElementConstructor<any>
+                                >
+                              | React.ReactFragment
+                              | React.ReactPortal
+                              | null
+                              | undefined;
+                            college:
+                              | string
+                              | number
+                              | boolean
+                              | React.ReactElement<
+                                  any,
+                                  string | React.JSXElementConstructor<any>
+                                >
+                              | React.ReactFragment
+                              | React.ReactPortal
+                              | null
+                              | undefined;
+                            startYear:
+                              | string
+                              | number
+                              | boolean
+                              | React.ReactElement<
+                                  any,
+                                  string | React.JSXElementConstructor<any>
+                                >
+                              | React.ReactFragment
+                              | React.ReactPortal
+                              | null
+                              | undefined;
+                            endYear:
+                              | string
+                              | number
+                              | boolean
+                              | React.ReactElement<
+                                  any,
+                                  string | React.JSXElementConstructor<any>
+                                >
+                              | React.ReactFragment
+                              | React.ReactPortal
+                              | null
+                              | undefined;
+                          }) => (
+                            <TableRow>
+                              <TableCell>{proof.degreeName}</TableCell>
+                              <TableCell>{proof.college}</TableCell>
+                              <TableCell>
+                                {proof.startYear ? proof.startYear : "N/A"}
+                              </TableCell>
+                              <TableCell>
+                                {proof.endYear ? proof.endYear : "N/A"}
+                              </TableCell>
+                              <TableCell>
+                                {proof.verified ? (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <CheckCircleIcon
+                                      sx={{
+                                        color: "green",
+                                      }}
+                                    />
+                                    <Typography
+                                      sx={{
+                                        mx: 1,
+                                        fontWeight: "bold",
+                                      }}
+                                      variant="caption"
+                                    >
+                                      Verified
+                                    </Typography>
+                                  </Box>
+                                ) : (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <CancelIcon
+                                      sx={{
+                                        color: "red",
+                                      }}
+                                    />
+                                    <Typography
+                                      sx={{
+                                        mx: 1,
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      Not Verified
+                                    </Typography>
+                                  </Box>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          )
+                        )}
+                      </TableBody>
+                    </Table>
+                  )}
+                <Divider
+                  sx={{
+                    my: 2,
+                    backgroundColor: "black",
+                  }}
+                />
+                <Typography variant="h6" gutterBottom>
+                  Employment Proof
+                </Typography>
+
+                {userId &&
+                  userId.employmentProofs &&
+                  userId.employmentProofs.length > 0 && (
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell> Company Name </TableCell>
+                          <TableCell>Job Title</TableCell>
+                          <TableCell>Start Date</TableCell>
+                          <TableCell>End Date</TableCell>
+                          <TableCell>Status</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {userId.employmentProofs.map(
+                          (proof: {
+                            verified: boolean;
+                            id: string;
+                            companyName: string;
+                            jobTitle: string;
+                            startDate: string;
+                            endDate: string;
+                          }) => (
+                            <TableRow>
+                              <TableCell>{proof.companyName}</TableCell>
+                              <TableCell>{proof.jobTitle}</TableCell>
+                              <TableCell>
+                                {proof.startDate ? proof.startDate : "N/A"}
+                              </TableCell>
+                              <TableCell>
+                                {proof.endDate ? proof.endDate : "N/A"}
+                              </TableCell>
+                              <TableCell>
+                                {proof.verified ? (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <CheckCircleIcon
+                                      sx={{
+                                        color: "green",
+                                      }}
+                                    />
+                                    <Typography
+                                      sx={{
+                                        mx: 1,
+                                        fontWeight: "bold",
+                                      }}
+                                      variant="caption"
+                                    >
+                                      Verified
+                                    </Typography>
+                                  </Box>
+                                ) : (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <CancelIcon
+                                      sx={{
+                                        color: "red",
+                                      }}
+                                    />
+                                    <Typography
+                                      sx={{
+                                        mx: 1,
+                                        fontWeight: "bold",
+                                      }}
+                                    >
+                                      Not Verified
+                                    </Typography>
+                                  </Box>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          )
+                        )}
+                      </TableBody>
+                    </Table>
+                  )}
+              </CardContent>
+            </Card>
+          </Box>
+        </Modal>
       </Container>
     </>
   );
