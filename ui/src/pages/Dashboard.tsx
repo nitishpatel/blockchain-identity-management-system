@@ -15,7 +15,6 @@ import {
 import { makeStyles } from "@mui/styles";
 import { useAuthState } from "../state/useAuthState";
 import { useHttpApi } from "../state/useHttpApi";
-import ReactDiffViewer from "react-diff-viewer";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 

@@ -66,14 +66,33 @@ const EducationApprovals = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell>ID</TableCell>
+                    <TableCell>Details</TableCell>
                     <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {approvalsUpdates.map(
-                    (txn: { proofId: string; candidateId: string }) => (
+                    (txn: {
+                      proofId: string;
+                      candidateId: string;
+                      dump: any;
+                    }) => (
                       <TableRow key={txn.proofId}>
                         <TableCell>{txn.proofId}</TableCell>
+                        <TableCell>
+                          {Object.keys(txn.dump).map((key) => {
+                            return (
+                              <Typography
+                                sx={{
+                                  display: "block",
+                                }}
+                              >
+                                <b>{key.toLocaleUpperCase()}</b> :{" "}
+                                {txn.dump[key]}
+                              </Typography>
+                            );
+                          })}
+                        </TableCell>
                         <TableCell>
                           <Button
                             variant="contained"

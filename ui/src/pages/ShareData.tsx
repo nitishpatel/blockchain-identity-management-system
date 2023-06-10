@@ -2,12 +2,15 @@ import { Box, Button, Container, Select, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useHttpApi } from "../state/useHttpApi";
 import { useAuthState } from "../state/useAuthState";
-
+import { useSnackbar } from "notistack";
+import { LoadingButton } from "@mui/lab";
 const ShareData = () => {
   const [organizationID, setOrganizationID] = React.useState("");
   const [organizations, setOrganizations] = React.useState([]);
   const { getOrganization, shareData } = useHttpApi();
   const { user } = useAuthState();
+  const [loading, setLoading] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     const fetchOrganizations = async () => {
       getOrganization().then((res) => {
@@ -43,7 +46,7 @@ const ShareData = () => {
               <option value={organization._id}>{organization.name}</option>
             ))}
           </Select>
-          <Button
+          <LoadingButton
             sx={{
               mx: 2,
               height: "60px",
@@ -52,26 +55,39 @@ const ShareData = () => {
             size="large"
             variant="contained"
             color="primary"
+            loading={loading}
             onClick={async () => {
               try {
+                setLoading(true);
                 if (!organizationID) {
-                  alert("Please select an organization");
+                  enqueueSnackbar("Please select an organization", {
+                    variant: "error",
+                  });
+                  setLoading(false);
                   return;
                 }
 
                 const res = await shareData(user._id, organizationID);
                 if (res) {
-                  alert("Data shared successfully");
+                  enqueueSnackbar("Data shared successfully", {
+                    variant: "success",
+                  });
                 } else {
-                  alert("Something went wrong");
+                  enqueueSnackbar("Something went wrong", {
+                    variant: "error",
+                  });
                 }
+                setLoading(false);
               } catch (e) {
-                alert("Something went wrong while sharing data" + e.message);
+                enqueueSnackbar("Something went wrong", {
+                  variant: "error",
+                });
+                setLoading(false);
               }
             }}
           >
             <Typography variant="h6">Share</Typography>
-          </Button>
+          </LoadingButton>
         </Box>
       </Container>
     </>
