@@ -5,14 +5,13 @@ import { red } from '@mui/material/colors';
 const theme = createTheme({
     typography: {
         fontFamily: "Nunito, Roboto, sans-serif"
-
     },
     palette: {
         primary: {
             main: '#ee6c4d',
         },
         secondary: {
-            main: '#19857b',
+            main: '#706fd3',
         },
         error: {
             main: red.A400,

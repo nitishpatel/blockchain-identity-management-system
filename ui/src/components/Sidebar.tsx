@@ -70,6 +70,13 @@ const SideBar = ({ location }) => {
           icon={<ListIcon />}
         />
       )}
+      {user && (user.role === 1 || user.role == 2) && (
+        <ListItemComponent
+          to="/user/search"
+          text="Search Data"
+          icon={<ListIcon />}
+        />
+      )}
       {user && user.role === 2 && (
         <ListItemComponent
           to="/user/employment-approvals"

@@ -157,3 +157,33 @@ exports.getOrganizations = (req, res) => {
             res.status(400).json({ error: "No User was Found in DB" })
         );
 };
+
+exports.searchUsers = (req, res) => {
+    const { query } = req.params;
+    console.log(query);
+    User.find(
+        {
+            $or: [
+                { name: { $regex: query, $options: "i" } },
+                { email: { $regex: query, $options: "i" } },
+            ],
+        },
+        {
+            _id: 1,
+            name: 1,
+            email: 1,
+        }
+    )
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    error: "No User was Found in DB",
+                });
+            }
+
+            res.json(user);
+        })
+        .catch((err) =>
+            res.status(400).json({ error: "No User was Found in DB" })
+        );
+};

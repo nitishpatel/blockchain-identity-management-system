@@ -9,6 +9,7 @@ const {
     getCompanies,
     fetchApprovals,
     getOrganizations,
+    searchUsers,
 } = require("../controllers/user");
 const { isSignedIn, isAuthenticated } = require("../controllers/auth");
 const getIdentityForOrganization = require("../controllers/identities/getIdentityByOrganization");
@@ -35,9 +36,11 @@ router.get(
             res.json(data);
         } catch (err) {
             console.log(err);
-            res.status(400).json({ error: "No User was Found in DB" });
+            res.status(400).json({ error: err.message });
         }
     }
 );
+
+router.get("/search/:query", isSignedIn, searchUsers);
 
 module.exports = router;

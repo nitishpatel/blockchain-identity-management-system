@@ -5,7 +5,7 @@ const connectToNetwork = require("../../../network");
 async function shareDataWithOrganization(id, organizationId) {
     try {
         const { contract } = await connectToNetwork(`user-${id}`);
-
+        // GET THE x509 IDENTITY OF THE ORGANIZATION
         const result = await contract.submitTransaction(
             "shareDataWithOrganization",
             id,

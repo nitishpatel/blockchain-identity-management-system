@@ -180,6 +180,14 @@ const useHttpApi_ = () => {
     const res = await get(`/api/organizations`);
     return res;
   };
+  const searchUser = async (id: string): Promise<any> => {
+    const res = await get(`/api/search/${id}`);
+    return res;
+  };
+  const getUserDataByOrg = async (id: string, orgId: string): Promise<any> => {
+    const res = await get(`/api/getuserdata/${id}/${orgId}`);
+    return res;
+  };
   return {
     userLogin,
     userLogout,
@@ -195,6 +203,8 @@ const useHttpApi_ = () => {
     approveEmployment,
     shareData,
     getOrganization,
+    searchUser,
+    getUserDataByOrg,
     get,
     post,
     put,

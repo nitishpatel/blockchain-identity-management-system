@@ -13,6 +13,7 @@ import Approvals from "./pages/EducationApproval";
 import EducationApprovals from "./pages/EducationApproval";
 import EmploymentApprovals from "./pages/EmploymentApproval";
 import ShareData from "./pages/ShareData";
+import SearchData from "./pages/SearchData";
 
 function App() {
   return useRoutes([
@@ -33,6 +34,14 @@ function App() {
           element: (
             <AuthRequired>
               <ShareData />
+            </AuthRequired>
+          ),
+        },
+        {
+          path: "/user/search",
+          element: (
+            <AuthRequired>
+              <SearchData />
             </AuthRequired>
           ),
         },

@@ -232,12 +232,16 @@ class BIMS extends Contract {
     if (!identityBytes || identityBytes.length === 0) {
       throw new Error(`Identity with ID ${id} does not exist`);
     }
+    // Get the identity of the user that is requesting the identity
+    let clientIdentity = ctx.clientIdentity.getID();
+    // The output of the Above function will be something like this x509::/OU=org1/OU=client/OU=department1/CN=user-64844f246959c619b47cc6ec::/C=US/ST=North Carolina/L=Durham/O=org1.example.com/CN=ca.org1.example.com. However I am only looking for the user-64844f246959c619b47cc6ec part
+    clientIdentity = clientIdentity.split("::")[1].split("/")[4].split("-")[1];
 
     const identity = JSON.parse(identityBytes.toString());
     // Check if the organization is allowed to see the identity
-    if (!identity.sharedWith.includes(ctx.clientIdentity.getMSPID())) {
+    if (!identity.sharedWith.includes(clientIdentity)) {
       throw new Error(
-        `Organization ${ctx.clientIdentity.getMSPID()} is not allowed to see identity ${id}`
+        `Organization ${clientIdentity} is not allowed to see identity ${id}`
       );
     }
 
