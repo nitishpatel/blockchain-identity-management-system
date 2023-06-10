@@ -15,16 +15,22 @@ import {
   Select,
   FormHelperText,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import { useHttpApi } from "../state/useHttpApi";
 import { useAuthState } from "../state/useAuthState";
+import { useSnackbar } from "notistack";
 
 const currentYear = new Date().getFullYear();
-
+interface College {
+  _id: string;
+  name: string;
+}
 export default function EducationProofForm() {
   const { addEducation, getColleges } = useHttpApi();
   const { user } = useAuthState();
   const [colleges, setColleges] = React.useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     const fetchColleges = async () => {
@@ -58,7 +64,7 @@ export default function EducationProofForm() {
     onSubmit: async (values) => {
       // Handle form submission here
       console.log(values);
-      const collegeName = colleges.filter(
+      const collegeName: College[] = colleges.filter(
         (college: { _id: string; name: string }) =>
           college._id === values.college
       );
@@ -68,7 +74,13 @@ export default function EducationProofForm() {
         collegeId: collegeName[0]._id,
       };
 
-      await addEducation(user._id, data);
+      const res = await addEducation(user._id, data);
+      if (res) {
+        enqueueSnackbar("Education Proof Added Successfully", {
+          variant: "success",
+        });
+      }
+      await formik.resetForm();
     },
   });
 
@@ -78,6 +90,14 @@ export default function EducationProofForm() {
   return (
     <Container component="main" maxWidth="xl">
       <CssBaseline />
+      {isSubmitting && (
+        <Box sx={{ width: "100%" }}>
+          <LinearProgress />
+          <Alert severity="info">
+            Please wait while we add your education proff
+          </Alert>
+        </Box>
+      )}
       <Box
         sx={{
           marginTop: 8,

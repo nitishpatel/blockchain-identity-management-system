@@ -14,14 +14,22 @@ import {
   MenuItem,
   FormHelperText,
   FormControl,
+  LinearProgress,
+  Alert,
 } from "@mui/material";
 import { useHttpApi } from "../state/useHttpApi";
 import { useAuthState } from "../state/useAuthState";
+import { useSnackbar } from "notistack";
+interface Company {
+  _id: string;
+  name: string;
+}
 
 const EmploymentProofForm = () => {
   const { addEmployment, getCompanies } = useHttpApi();
   const { user } = useAuthState();
   const [companies, setCompanies] = React.useState([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     const fetchCompanies = async () => {
@@ -50,16 +58,22 @@ const EmploymentProofForm = () => {
     onSubmit: async (values) => {
       // Handle form submission logic here
       console.log(values);
-      const collegeName = companies.filter(
-        (college: { _id: string; name: string }) =>
-          college._id === values.companyName
+      const collegeName: Company[] = companies.filter(
+        (college: Company) => college._id === values.companyName
       );
+
       const data = {
         ...values,
         companyName: collegeName[0].name,
         companyId: collegeName[0]._id,
       };
-      await addEmployment(user._id, data);
+      const res = await addEmployment(user._id, data);
+      if (res) {
+        enqueueSnackbar("Education Proof Added Successfully", {
+          variant: "success",
+        });
+      }
+      await formik.resetForm();
     },
   });
 
@@ -71,6 +85,7 @@ const EmploymentProofForm = () => {
     handleBlur,
     handleSubmit,
     getFieldProps,
+    isSubmitting,
   } = formik;
 
   return (
@@ -84,6 +99,14 @@ const EmploymentProofForm = () => {
           alignItems: "center",
         }}
       >
+        {isSubmitting && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+            <Alert severity="info">
+              Please wait while we add your employment proff
+            </Alert>
+          </Box>
+        )}
         <Typography component="h1" variant="h5">
           Add Employment Proof
         </Typography>
